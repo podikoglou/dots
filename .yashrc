@@ -1,0 +1,62 @@
+. --autoload --no-alias initialization/common
+
+# ctrl-l
+bindkey --emacs '\^L' clear-and-redraw-all
+bindkey --vi-insert '\^L' clear-and-redraw-all
+bindkey --vi-command '\^L' clear-and-redraw-all
+
+# Vi Mode
+set -o vi
+
+# various functions dealing with the PATH variable
+path_append() {
+	export PATH=$PATH:"$1"
+}
+
+# thanks dylan, have fun
+# https://github.com/dylanaraps/pure-sh-bible?tab=readme-ov-file#split-a-string-on-a-delimiter
+path_display() {
+	# Disable globbing.
+	# This ensures that the word-splitting is safe.
+	set -f
+
+	# Store the current value of 'IFS' so we
+	# can restore it later.
+	old_ifs=$IFS
+
+	# Change the field separator to what we're
+	# splitting on.
+	IFS=':'
+
+	# Create an argument list splitting at each
+	# occurance of '$2'.
+	#
+	# This is safe to disable as it just warns against
+	# word-splitting which is the behavior we expect.
+	# shellcheck disable=2086
+	set -- $PATH
+
+	# Print each list value on its own line.
+	printf '%s\n' "$@"
+
+	# Restore the value of 'IFS'.
+	IFS=$old_ifs
+
+	# Re-enable globbing.
+	set +f
+}
+
+path_append "$HOME/.local/bin"
+path_append "$HOME/.cargo/bin"
+path_append "$HOME/go/bin"
+path_append "$HOME/.bun/bin"
+path_append "$HOME/.orbstack/bin"
+path_append "/usr/local/opt/llvm/bin"
+
+# setup various tools
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+. '/Users/apodikoglou/.opam/opam-init/init.sh'
+
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"

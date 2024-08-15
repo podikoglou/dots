@@ -1,0 +1,13 @@
+live_config_reload = true
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+# decorations = "buttonless"
+# dynamic_padding = false
+opacity = 0.95
+
+[font.normal]
+# family = "DaddyTimeMono Nerd Font"
+family = "Server Mono"
