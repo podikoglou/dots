@@ -5,8 +5,11 @@ bindkey --emacs '\^L' clear-and-redraw-all
 bindkey --vi-insert '\^L' clear-and-redraw-all
 bindkey --vi-command '\^L' clear-and-redraw-all
 
-# Vi Mode
+# vi mode
 set -o vi
+
+# disable prediction
+set +o le-predict
 
 # various functions dealing with the PATH variable
 path_append() {
